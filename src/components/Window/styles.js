@@ -9,7 +9,8 @@ export const Container = styled.div`
 `;
 
 export const Frame = styled.div`
-	border: 2px solid ${props => props.theme.colors.frame};
+	border: 2px solid;
+	border-color: ${props => props.theme.colors.frame};
 	height: 100%;
 	left: 0;
 	position: absolute;

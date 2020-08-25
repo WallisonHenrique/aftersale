@@ -11,20 +11,6 @@ export default function Scene(props) {
 	const [theme, setTheme] = useTheme();
 	const getCurrentTime = () => new Date();
 
-	const daylamps = [
-		[false, false, false],
-		[false, false, false],
-		[false, false, false],
-		[false, false, false]
-	];
-
-	const nightlamps = [
-		[false, false, true],
-		[true, true, false],
-		[false, true, false],
-		[true, true, false]
-	];
-
 	useEffect(() => {
 		const timer = setInterval(() => {
 			setTheme(getCurrentTime(), props.sunrisesunset);
@@ -32,12 +18,53 @@ export default function Scene(props) {
 		return () => clearInterval(timer);
 	});
 
+	const getLights = () => {
+		const daylamps = [
+			[false, false, false],
+			[false, false, false],
+			[false, false, false],
+			[false, false, false]
+		];
+
+		const partiallamps = [
+			[true, false, false],
+			[false, false, false],
+			[false, false, false],
+			[false, true, true]
+		];
+
+		const nightlamps = [
+			[false, false, true],
+			[true, true, false],
+			[false, true, false],
+			[true, true, false]
+		];
+
+		switch(theme.title) {
+			case "nauticaldawn":
+				return partiallamps;
+			case "civildawn":
+				return partiallamps;
+			case "day":
+				return daylamps;
+			case "noon":
+				return daylamps;
+			case "sunset":
+				return partiallamps;
+			case "civildusk":
+				return partiallamps;
+			case "nauticaldusk":
+				return partiallamps;
+			case "astronomicaldusk":
+				return nightlamps;
+			default: 
+				return nightlamps; 
+		}
+	}
+
 	useEffect(() => {
 		props.setSwitcher(false);
-		if (theme.title === "day")
-			props.loadLamps(DataTypes.LAMPS, daylamps);
-		else
-			props.loadLamps(DataTypes.LAMPS, nightlamps);
+		props.loadLamps(DataTypes.LAMPS, getLights());
 	},[theme]);
 
 	return (
